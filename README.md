@@ -33,7 +33,7 @@ The system consists of:
 
 1. **Bedrock Agent**: AI coach using Claude 3.5 Sonnet v2 model
 2. **API Gateway**: Secure HTTP endpoints for frontend integration
-3. **Lambda Functions**: Backend processing for user profiles and case management
+3. **Lambda Functions**: Backend processing for case management
 4. **DynamoDB Tables**: Secure storage for user profiles and case summaries
 
 ## Deployment Instructions
@@ -55,7 +55,7 @@ The system consists of:
 2. Deploy using AWS CLI:
    ```bash
    aws cloudformation deploy \
-     --template-file domestic_inclusive_violance_demo.yaml \
+     --template-file simplified_template.yaml \
      --stack-name domestic-violence-response-system \
      --capabilities CAPABILITY_NAMED_IAM
    ```
@@ -73,8 +73,6 @@ After successful deployment, the CloudFormation stack outputs the API Gateway en
 | Method | Endpoint | Description | Request Body/Parameters | Response |
 |--------|----------|-------------|------------------------|----------|
 | POST | /invokeAgent | Invokes the Bedrock agent | `{"input": "user message", "sessionId": "optional-session-id"}` | `{"response": "agent response", "sessionId": "session-id"}` |
-| POST | /StoreNewUser | Creates a new user profile | `{"name": "User Name", "phoneNumber": "1234567890", "email": "optional@email.com"}` | `{"message": "User profile created successfully", "caseId": "generated-case-id"}` |
-| GET | /checkUser | Checks if a user exists by phone number | Query param: `phoneNumber=1234567890` | `{"exists": true/false, "user": {user-details}}` |
 | GET | /getUserCaseDetails | Gets case details for a user | Query param: `caseId=case-id-value` | `{"profile": {user-profile}, "summaries": [{summary-entries}]}` |
 | POST | /saveSummary | Saves a case summary | `{"caseId": "case-id", "summary": "session summary text"}` | `{"message": "Summary saved successfully", "caseId": "case-id", "timestamp": "timestamp"}` |
 
