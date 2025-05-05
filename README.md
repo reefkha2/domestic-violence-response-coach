@@ -5,7 +5,7 @@
 ### Option 1: Clone and Deploy
 1. Clone this repository
    ```bash
-   git clone https://github.com/your-username/domestic-violence-response-coach.git
+   git clone https://github.com/reefkha2/domestic-violence-response-coach.git
    cd domestic-violence-response-coach
    ```
 
