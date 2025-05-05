@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-  User Profile Management System with Bedrock Agent
-  This template deploys a complete solution including API Gateway, Lambda functions, 
+  Domestic Violence Response Coach System
+  This template deploys a solution including API Gateway, Lambda functions, 
   DynamoDB tables, and an Amazon Bedrock agent for domestic violence response coaching.
 
 Metadata:
@@ -46,29 +46,6 @@ Resources:
           Effect: "Allow"
         - Resource:
           - Fn::Sub: "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/SaveSummary-${AWS::StackName}:*"
-          Action:
-          - "logs:CreateLogStream"
-          - "logs:PutLogEvents"
-          Effect: "Allow"
-
-  IAMManagedPolicyPolicyserviceroleAWSLambdaBasicExecutionRoledb2f3301b8f145d39a1d87c744c6dbe6:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::IAM::ManagedPolicy"
-    DeletionPolicy: "Delete"
-    Properties:
-      ManagedPolicyName: 
-        Fn::Sub: "AWSLambdaBasicExecutionRole-db2f3301-b8f1-45d3-9a1d-87c744c6dbe6-${AWS::StackName}"
-      Path: "/service-role/"
-      Description: ""
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-        - Resource: 
-            Fn::Sub: "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
-          Action: "logs:CreateLogGroup"
-          Effect: "Allow"
-        - Resource:
-          - Fn::Sub: "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/userUserDetailsByPhoneNumber-${AWS::StackName}:*"
           Action:
           - "logs:CreateLogStream"
           - "logs:PutLogEvents"
@@ -119,29 +96,6 @@ Resources:
           - "logs:CreateLogStream"
           - "logs:PutLogEvents"
           Effect: "Allow"
-
-  IAMManagedPolicyPolicyserviceroleAWSLambdaBasicExecutionRole9836f48ef69a496fa69483e0b1a50f9b:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::IAM::ManagedPolicy"
-    DeletionPolicy: "Delete"
-    Properties:
-      ManagedPolicyName: 
-        Fn::Sub: "AWSLambdaBasicExecutionRole-9836f48e-f69a-496f-a694-83e0b1a50f9b-${AWS::StackName}"
-      Path: "/service-role/"
-      Description: ""
-      PolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-        - Resource: 
-            Fn::Sub: "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:*"
-          Action: "logs:CreateLogGroup"
-          Effect: "Allow"
-        - Resource:
-          - Fn::Sub: "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/CreateUserProfile-${AWS::StackName}:*"
-          Action:
-          - "logs:CreateLogStream"
-          - "logs:PutLogEvents"
-          Effect: "Allow"
   # IAM Roles - reference policies directly
   IAMRoleSaveSummaryrole445qvo7s:
     UpdateReplacePolicy: "Delete"
@@ -155,26 +109,6 @@ Resources:
       MaxSessionDuration: 3600
       RoleName: 
         Fn::Sub: "SaveSummary-role-445qvo7s-${AWS::StackName}"
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-        - Action: "sts:AssumeRole"
-          Effect: "Allow"
-          Principal:
-            Service: "lambda.amazonaws.com"
-
-  IAMRoleCreateUserProfilerolekg8o5yu9:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::IAM::Role"
-    DeletionPolicy: "Delete"
-    Properties:
-      Path: "/service-role/"
-      ManagedPolicyArns:
-      - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-      - Ref: IAMManagedPolicyPolicyserviceroleAWSLambdaBasicExecutionRole9836f48ef69a496fa69483e0b1a50f9b
-      MaxSessionDuration: 3600
-      RoleName: 
-        Fn::Sub: "CreateUserProfile-role-kg8o5yu9-${AWS::StackName}"
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -222,27 +156,6 @@ Resources:
           Effect: "Allow"
           Principal:
             Service: "lambda.amazonaws.com"
-
-  IAMRoleUserUserDetailsByPhoneNumberroleak03yrs6:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::IAM::Role"
-    DeletionPolicy: "Delete"
-    Properties:
-      Path: "/service-role/"
-      ManagedPolicyArns:
-      - "arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess"
-      - Ref: IAMManagedPolicyPolicyserviceroleAWSLambdaBasicExecutionRoledb2f3301b8f145d39a1d87c744c6dbe6
-      MaxSessionDuration: 3600
-      RoleName: 
-        Fn::Sub: "userUserDetailsByPhoneNumber-role-ak03yrs6-${AWS::StackName}"
-      AssumeRolePolicyDocument:
-        Version: "2012-10-17"
-        Statement:
-        - Action: "sts:AssumeRole"
-          Effect: "Allow"
-          Principal:
-            Service: "lambda.amazonaws.com"
-
   # IAM Role for Bedrock Agent
   IAMRoleBedrockAgent:
     UpdateReplacePolicy: "Delete"
@@ -273,6 +186,7 @@ Resources:
                 Action:
                   - bedrock:InvokeModel
                 Resource: "*"
+
   ApiGatewayV2Api:
     UpdateReplacePolicy: "Delete"
     Type: "AWS::ApiGatewayV2::Api"
@@ -295,7 +209,6 @@ Resources:
       Tags: {}
       Name: 
         Fn::Sub: "LiveCoachingAPI-${AWS::StackName}"
-
   # Bedrock Agent Resources
   BedrockAgent:
     Type: AWS::Bedrock::Agent
@@ -619,99 +532,6 @@ Resources:
         Size: 512
       Architectures:
       - "x86_64"
-  LambdaFunctionCreateUserProfile:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::Lambda::Function"
-    DeletionPolicy: "Delete"
-    DependsOn: IAMRoleCreateUserProfilerolekg8o5yu9
-    Properties:
-      MemorySize: 128
-      Description: ""
-      TracingConfig:
-        Mode: "PassThrough"
-      Timeout: 3
-      RuntimeManagementConfig:
-        UpdateRuntimeOn: "Auto"
-      Handler: "lambda_function.lambda_handler"
-      Code:
-        ZipFile: |
-          import json
-          import boto3
-          import uuid
-          from datetime import datetime
-          
-          dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table('UsersProfiles')
-          
-          def lambda_handler(event, context):
-              try:
-                  # Parse the incoming event
-                  body = json.loads(event.get('body', '{}'))
-                  
-                  # Extract user details
-                  name = body.get('name')
-                  phone_number = body.get('phoneNumber')
-                  email = body.get('email', '')
-                  
-                  if not name or not phone_number:
-                      return {
-                          'statusCode': 400,
-                          'body': json.dumps({'error': 'Missing required fields'})
-                      }
-                  
-                  # Generate a unique case ID
-                  case_id = str(uuid.uuid4())
-                  
-                  # Create timestamp
-                  timestamp = datetime.now().isoformat()
-                  
-                  # Create user profile in DynamoDB
-                  response = table.put_item(
-                      Item={
-                          'caseId': case_id,
-                          'phoneNumber': phone_number,
-                          'name': name,
-                          'email': email,
-                          'createdAt': timestamp,
-                          'updatedAt': timestamp
-                      }
-                  )
-                  
-                  return {
-                      'statusCode': 200,
-                      'headers': {
-                          'Content-Type': 'application/json',
-                          'Access-Control-Allow-Origin': '*'
-                      },
-                      'body': json.dumps({
-                          'message': 'User profile created successfully',
-                          'caseId': case_id
-                      })
-                  }
-              except Exception as e:
-                  print(f"Error: {str(e)}")
-                  return {
-                      'statusCode': 500,
-                      'body': json.dumps({'error': str(e)})
-                  }
-      Role:
-        Fn::GetAtt:
-        - "IAMRoleCreateUserProfilerolekg8o5yu9"
-        - "Arn"
-      FileSystemConfigs: []
-      FunctionName: 
-        Fn::Sub: "CreateUserProfile-${AWS::StackName}"
-      Runtime: "python3.13"
-      PackageType: "Zip"
-      LoggingConfig:
-        LogFormat: "Text"
-        LogGroup: 
-          Fn::Sub: "/aws/lambda/CreateUserProfile-${AWS::StackName}"
-      RecursiveLoop: "Terminate"
-      EphemeralStorage:
-        Size: 512
-      Architectures:
-      - "x86_64"
   LambdaFunctionGetUserCaseDetails:
     UpdateReplacePolicy: "Delete"
     Type: "AWS::Lambda::Function"
@@ -814,103 +634,6 @@ Resources:
         Size: 512
       Architectures:
       - "x86_64"
-  LambdaFunctionUserUserDetailsByPhoneNumber:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::Lambda::Function"
-    DeletionPolicy: "Delete"
-    DependsOn: IAMRoleUserUserDetailsByPhoneNumberroleak03yrs6
-    Properties:
-      MemorySize: 128
-      Description: ""
-      TracingConfig:
-        Mode: "PassThrough"
-      Timeout: 3
-      RuntimeManagementConfig:
-        UpdateRuntimeOn: "Auto"
-      Handler: "lambda_function.lambda_handler"
-      Code:
-        ZipFile: |
-          import json
-          import boto3
-          from boto3.dynamodb.conditions import Key
-          
-          dynamodb = boto3.resource('dynamodb')
-          table = dynamodb.Table('UsersProfiles')
-          
-          def lambda_handler(event, context):
-              try:
-                  # Get phone number from query parameters
-                  query_params = event.get('queryStringParameters', {})
-                  if not query_params:
-                      return {
-                          'statusCode': 400,
-                          'body': json.dumps({'error': 'Missing query parameters'})
-                      }
-                  
-                  phone_number = query_params.get('phoneNumber')
-                  
-                  if not phone_number:
-                      return {
-                          'statusCode': 400,
-                          'body': json.dumps({'error': 'Missing phoneNumber parameter'})
-                      }
-                  
-                  # Query the GSI by phone number
-                  response = table.query(
-                      IndexName='PhoneIndex',
-                      KeyConditionExpression=Key('phoneNumber').eq(phone_number)
-                  )
-                  
-                  items = response.get('Items', [])
-                  
-                  if not items:
-                      return {
-                          'statusCode': 404,
-                          'headers': {
-                              'Content-Type': 'application/json',
-                              'Access-Control-Allow-Origin': '*'
-                          },
-                          'body': json.dumps({'exists': False})
-                      }
-                  
-                  # Return the first matching user
-                  user = items[0]
-                  
-                  return {
-                      'statusCode': 200,
-                      'headers': {
-                          'Content-Type': 'application/json',
-                          'Access-Control-Allow-Origin': '*'
-                      },
-                      'body': json.dumps({
-                          'exists': True,
-                          'user': user
-                      })
-                  }
-              except Exception as e:
-                  print(f"Error: {str(e)}")
-                  return {
-                      'statusCode': 500,
-                      'body': json.dumps({'error': str(e)})
-                  }
-      Role:
-        Fn::GetAtt:
-        - "IAMRoleUserUserDetailsByPhoneNumberroleak03yrs6"
-        - "Arn"
-      FileSystemConfigs: []
-      FunctionName: 
-        Fn::Sub: "userUserDetailsByPhoneNumber-${AWS::StackName}"
-      Runtime: "python3.13"
-      PackageType: "Zip"
-      LoggingConfig:
-        LogFormat: "Text"
-        LogGroup: 
-          Fn::Sub: "/aws/lambda/userUserDetailsByPhoneNumber-${AWS::StackName}"
-      RecursiveLoop: "Terminate"
-      EphemeralStorage:
-        Size: 512
-      Architectures:
-      - "x86_64"
   # API Gateway Lambda Integrations
   ApiGatewayV2IntegrationInvokeAgent:
     Type: AWS::ApiGatewayV2::Integration
@@ -938,19 +661,6 @@ Resources:
       PayloadFormatVersion: '2.0'
       IntegrationMethod: POST
 
-  ApiGatewayV2IntegrationCreateUserProfile:
-    Type: AWS::ApiGatewayV2::Integration
-    DeletionPolicy: "Delete"
-    UpdateReplacePolicy: "Delete"
-    Properties:
-      ApiId:
-        Ref: ApiGatewayV2Api
-      IntegrationType: AWS_PROXY
-      IntegrationUri:
-        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunctionCreateUserProfile.Arn}/invocations
-      PayloadFormatVersion: '2.0'
-      IntegrationMethod: POST
-
   ApiGatewayV2IntegrationGetUserCaseDetails:
     Type: AWS::ApiGatewayV2::Integration
     DeletionPolicy: "Delete"
@@ -961,19 +671,6 @@ Resources:
       IntegrationType: AWS_PROXY
       IntegrationUri:
         Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunctionGetUserCaseDetails.Arn}/invocations
-      PayloadFormatVersion: '2.0'
-      IntegrationMethod: POST
-
-  ApiGatewayV2IntegrationUserDetailsByPhone:
-    Type: AWS::ApiGatewayV2::Integration
-    DeletionPolicy: "Delete"
-    UpdateReplacePolicy: "Delete"
-    Properties:
-      ApiId:
-        Ref: ApiGatewayV2Api
-      IntegrationType: AWS_PROXY
-      IntegrationUri:
-        Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaFunctionUserUserDetailsByPhoneNumber.Arn}/invocations
       PayloadFormatVersion: '2.0'
       IntegrationMethod: POST
   # API Gateway Routes
@@ -1005,20 +702,6 @@ Resources:
         - - integrations
           - Ref: ApiGatewayV2IntegrationSaveSummary
 
-  ApiGatewayV2RouteCreateUserProfile:
-    Type: AWS::ApiGatewayV2::Route
-    DeletionPolicy: "Delete"
-    UpdateReplacePolicy: "Delete"
-    Properties:
-      ApiId:
-        Ref: ApiGatewayV2Api
-      RouteKey: 'POST /StoreNewUser'
-      Target:
-        Fn::Join:
-        - /
-        - - integrations
-          - Ref: ApiGatewayV2IntegrationCreateUserProfile
-
   ApiGatewayV2RouteGetUserCaseDetails:
     Type: AWS::ApiGatewayV2::Route
     DeletionPolicy: "Delete"
@@ -1032,20 +715,6 @@ Resources:
         - /
         - - integrations
           - Ref: ApiGatewayV2IntegrationGetUserCaseDetails
-
-  ApiGatewayV2RouteUserDetailsByPhone:
-    Type: AWS::ApiGatewayV2::Route
-    DeletionPolicy: "Delete"
-    UpdateReplacePolicy: "Delete"
-    Properties:
-      ApiId:
-        Ref: ApiGatewayV2Api
-      RouteKey: 'GET /checkUser'
-      Target:
-        Fn::Join:
-        - /
-        - - integrations
-          - Ref: ApiGatewayV2IntegrationUserDetailsByPhone
   # API Gateway Stage
   ApiGatewayV2Stage:
     Type: AWS::ApiGatewayV2::Stage
@@ -1088,21 +757,6 @@ Resources:
         Fn::Sub: "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayV2Api}/*/*/saveSummary"
       Principal: "apigateway.amazonaws.com"
 
-  LambdaPermissionFunctionCreateUserProfile:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::Lambda::Permission"
-    DeletionPolicy: "Delete"
-    DependsOn: LambdaFunctionCreateUserProfile
-    Properties:
-      FunctionName:
-        Fn::GetAtt:
-        - "LambdaFunctionCreateUserProfile"
-        - "Arn"
-      Action: "lambda:InvokeFunction"
-      SourceArn:
-        Fn::Sub: "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayV2Api}/*/*/StoreNewUser"
-      Principal: "apigateway.amazonaws.com"
-
   LambdaPermissionFunctionGetUserCaseDetails:
     UpdateReplacePolicy: "Delete"
     Type: "AWS::Lambda::Permission"
@@ -1116,21 +770,6 @@ Resources:
       Action: "lambda:InvokeFunction"
       SourceArn:
         Fn::Sub: "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayV2Api}/*/*/getUserCaseDetails"
-      Principal: "apigateway.amazonaws.com"
-
-  LambdaPermissionFunctionuserUserDetailsByPhoneNumber:
-    UpdateReplacePolicy: "Delete"
-    Type: "AWS::Lambda::Permission"
-    DeletionPolicy: "Delete"
-    DependsOn: LambdaFunctionUserUserDetailsByPhoneNumber
-    Properties:
-      FunctionName:
-        Fn::GetAtt:
-        - "LambdaFunctionUserUserDetailsByPhoneNumber"
-        - "Arn"
-      Action: "lambda:InvokeFunction"
-      SourceArn:
-        Fn::Sub: "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGatewayV2Api}/*/*/checkUser"
       Principal: "apigateway.amazonaws.com"
   DynamoDBTableUsersProfiles:
     UpdateReplacePolicy: "Delete"
@@ -1217,9 +856,7 @@ Resources:
     DependsOn:
       - ApiGatewayV2RouteInvokeAgent
       - ApiGatewayV2RouteSaveSummary
-      - ApiGatewayV2RouteCreateUserProfile
       - ApiGatewayV2RouteGetUserCaseDetails
-      - ApiGatewayV2RouteUserDetailsByPhone
     Properties:
       ApiId:
         Ref: "ApiGatewayV2Api"
