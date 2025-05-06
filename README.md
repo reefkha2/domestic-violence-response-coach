@@ -27,7 +27,7 @@ This solution is the first to combine advanced AI capabilities with established 
 
 ![Architecture Diagram](architecture_diagram.png)
 
-*Note: Place your architecture diagram image file in the same directory as this README and name it "architecture_diagram.png"*
+
 
 The system consists of:
 
