@@ -145,6 +145,4 @@ aws cloudformation delete-stack --stack-name domestic-violence-response-system
 
 The template has been configured with appropriate deletion policies to ensure all resources are properly cleaned up when the stack is deleted.
 
-## License
 
-This solution is provided under the MIT License and can be freely modified and distributed according to your organization's requirements.
