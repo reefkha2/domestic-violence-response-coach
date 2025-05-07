@@ -19,7 +19,7 @@ The Domestic Violence Response Coach is a Generative AI-powered system designed 
 - Suggesting appropriate questions with the right emotional tone
 - Following the [DASH (2009) Risk Identification and Assessment Model](https://www.dashriskchecklist.co.uk/) - Primary framework for risk assessment in domestic violence cases
 - Operating bilingually in both English and Saudi Arabic dialect (Najdi) for more natural, human-based interactions
-- [Stay Safe risk assessment]([https://www.staysafe.org/resources/](https://www.staysafe-east.org.uk/wp-content/uploads/2020/08/RISK-ASSESSMENT-updated-2020-converted.pd)) - Specialized guidance for cases involving persons with disabilities and [WHO Guidelines for Elder Abuse](https://www.who.int/news-room/fact-sheets/detail/elder-abuse) - World Health Organization protocols for identifying and responding to elder abuse
+- [Stay Safe risk assessment](https://www.staysafe-east.org.uk/wp-content/uploads/2020/08/RISK-ASSESSMENT-updated-2020-converted.pdf) - Specialized guidance for cases involving persons with disabilities and [WHO Guidelines for Elder Abuse](https://www.who.int/news-room/fact-sheets/detail/elder-abuse) - World Health Organization protocols for identifying and responding to elder abuse
 
 - Summarizing sessions to maintain context across different specialists and prevent victims from repeating information
 
