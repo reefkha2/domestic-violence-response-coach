@@ -84,6 +84,7 @@ The Domestic Violence Response Coaching system follows these three primary steps
 
 ### Deployment Steps
 
+#### Option 1: Using AWS CLI
 1. Clone this repository:
    ```bash
    git clone https://github.com/reefkha2/domestic-violence-response-coach.git
@@ -97,6 +98,27 @@ The Domestic Violence Response Coaching system follows these three primary steps
      --stack-name domestic-violence-response-system \
      --capabilities CAPABILITY_NAMED_IAM
    ```
+
+#### Option 2: Using AWS Console
+1. Sign in to the AWS Management Console and open the CloudFormation console at https://console.aws.amazon.com/cloudformation/
+
+2. Choose "Create stack" > "With new resources (standard)"
+
+3. In the "Specify template" section, select "Upload a template file"
+
+4. Click "Choose file" and select the `simplified_template.yaml` file from your local copy of this repository
+
+5. Click "Next"
+
+6. Enter a stack name (e.g., "domestic-violence-response-system")
+
+7. Review the parameters (you can keep the default values) and click "Next"
+
+8. On the "Configure stack options" page, click "Next"
+
+9. On the "Review" page, scroll down and check the box acknowledging that CloudFormation might create IAM resources
+
+10. Click "Create stack" and wait for the deployment to complete (typically 5-10 minutes)
 
 3. Monitor the deployment in the AWS CloudFormation console. Deployment typically takes 5-10 minutes to complete.
 
